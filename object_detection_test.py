@@ -10,6 +10,7 @@ sys.path.append("/models/research")
 #import cv2
 import numpy as np
 import tensorflow as tf
+#from matplotlib import pyplot as plt
 from PIL import Image
 from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as vis_util
@@ -83,6 +84,8 @@ if __name__ == '__main__':
     # Detect objects
     scores, classes, image_with_labels = detect_objects(image_np, sess, detection_graph)
     #print("\n".join("{0:<20s}: {1:.1f}%".format(category_index[c]['name'], s*100.) for (c, s) in zip(classes[0], scores[0])))
+    #plt.imshow(image_with_labels)
+    #plt.show()
 
     sess.close()
 
