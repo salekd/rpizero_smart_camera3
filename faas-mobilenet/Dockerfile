@@ -40,6 +40,9 @@ RUN pip install -r requirements.txt
 WORKDIR /root/
 
 ENV fprocess="python index.py"
+ENV read_timeout=10
+ENV write_timeout=10
+ENV exec_timeout=10
 
 HEALTHCHECK --interval=1s CMD [ -e /tmp/.lock ] || exit 1
 
