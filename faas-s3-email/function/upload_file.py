@@ -4,6 +4,8 @@ This file contains a function to upload local files to Amazon S3.
 
 import boto3
 import datetime
+import base64
+from io import BytesIO
 
 
 def upload_file(aws_access_key_id, aws_secret_access_key, image_data, bucket_name, human_detected):
@@ -21,7 +23,7 @@ def upload_file(aws_access_key_id, aws_secret_access_key, image_data, bucket_nam
     """
 
     # Create an S3 client
-    s3 = boto3.client('s3', aws_access_key_id, aws_secret_access_key)
+    s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
     # Filename that will appear in S3
     now = datetime.datetime.now()
@@ -36,7 +38,8 @@ def upload_file(aws_access_key_id, aws_secret_access_key, image_data, bucket_nam
     # Uploads the given file using a managed uploader, which will split up large
     # files automatically and upload parts in parallel.
     print("Uploading file {} to Amazon S3".format(filename_s3))
-    s3.upload_fileobj(image_data, bucket_name, filename_s3, ExtraArgs={'ContentType': "image/jpeg", 'ACL': "public-read"})
+    image_decoded = base64.b64decode(image_data)
+    s3.upload_fileobj(BytesIO(image_decoded), bucket_name, filename_s3, ExtraArgs={'ContentType': "image/jpeg", 'ACL': "public-read"})
 
     # Generate url
     url = s3.generate_presigned_url('get_object', Params = {'Bucket': bucket_name, 'Key': filename_s3}, ExpiresIn = 7*24*3600)

@@ -9,6 +9,7 @@ RUN apk --no-cache add curl \
 
 WORKDIR /root/
 
+COPY s3-email.cfg       .
 COPY index.py           .
 COPY requirements.txt   .
 RUN pip install -r requirements.txt
