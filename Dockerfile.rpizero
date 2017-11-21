@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     python-tk \
     wget \
     libblas-dev liblapack-dev libatlas-base-dev gfortran python-setuptools \
+    libfreetype6-dev libpng12-dev libjpeg-dev \
 #    && echo "Pulling watchdog binary from Github." \
 #    && curl -sSL https://github.com/openfaas/faas/releases/download/0.6.9/fwatchdog > /usr/bin/fwatchdog \
 #    && chmod +x /usr/bin/fwatchdog \
