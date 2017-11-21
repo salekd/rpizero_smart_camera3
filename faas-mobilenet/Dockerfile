@@ -19,6 +19,8 @@ RUN apt-get update && apt-get install -y \
     && tar -zxvf ssd_mobilenet_v1_coco_11_06_2017.tar.gz
 
 ENV PYTHONPATH=/model/research:/model/research/slim
+# Disable TensorFlow warning messages
+ENV TF_CPP_MIN_LOG_LEVEL=3
 
 WORKDIR /root/
 
