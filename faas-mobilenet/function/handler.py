@@ -95,8 +95,7 @@ def handle(req, output_image=False):
     result = {}
     if output_image:
         image = Image.fromarray(image_with_labels)
-        image.save(filename_local)
-        buf = StringIO()
+        buf = BytesIO()
         image.save(buf, format="JPEG")
         image_data = base64.b64encode(buf.getvalue())
         result['image'] = image_data
