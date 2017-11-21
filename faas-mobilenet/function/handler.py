@@ -13,6 +13,7 @@ import tensorflow as tf
 from PIL import Image
 import base64
 from io import BytesIO
+from io import StringIO
 from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as vis_util
 
@@ -64,7 +65,7 @@ def detect_objects(image_np, sess, detection_graph):
     return scores, classes, image_np
 
 
-def handle(req):  
+def handle(req, output_image=False):  
     json_req = json.loads(req)
 
     # Load image
@@ -91,7 +92,17 @@ def handle(req):
 
     sess.close()
 
+    result = {}
+    if output_image:
+        image = Image.fromarray(image_with_labels)
+        image.save(filename_local)
+        buf = StringIO()
+        image.save(buf, format="JPEG")
+        image_data = base64.b64encode(buffer.getvalue())
+        result['image'] = image_data
+
     encoder.FLOAT_REPR = lambda f: format(f, '.4f')
     encoder.c_make_encoder = None
-    result = [{'class': category_index[c]['name'], 'score': float(s)} for (c, s) in zip(classes[0], scores[0])]
+    result['detected_objects'] = [{'class': category_index[c]['name'], 'score': float(s)} for (c, s) in zip(classes[0], scores[0])]
+
     print(json.dumps(result))
