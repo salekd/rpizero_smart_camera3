@@ -23,6 +23,7 @@ ENV PYTHONPATH=/model/research:/model/research/slim
 WORKDIR /root/
 
 COPY index.py           .
+COPY index_output_image.py .
 COPY requirements.txt   .
 RUN pip install -r requirements.txt
 

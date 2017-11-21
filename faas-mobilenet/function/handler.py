@@ -98,7 +98,7 @@ def handle(req, output_image=False):
         image.save(filename_local)
         buf = StringIO()
         image.save(buf, format="JPEG")
-        image_data = base64.b64encode(buffer.getvalue())
+        image_data = base64.b64encode(buf.getvalue())
         result['image'] = image_data
 
     encoder.FLOAT_REPR = lambda f: format(f, '.4f')
