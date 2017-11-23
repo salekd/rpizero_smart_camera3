@@ -43,7 +43,7 @@ ENV fprocess="python index.py"
 # Make sure to allow enough time for the function to run
 ENV read_timeout=10
 ENV write_timeout=10
-ENV exec_timeout=10
+ENV exec_timeout=30
 
 HEALTHCHECK --interval=1s CMD [ -e /tmp/.lock ] || exit 1
 
