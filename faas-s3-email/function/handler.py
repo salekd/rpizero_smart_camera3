@@ -32,8 +32,12 @@ def handle(req):
     # Send e-mail notification
     if human_detected:
         subject = "Human detected"
+        body = "<html><body>"
         # Send only the top 10 identified objects
-        body = "\n".join(["{0}: {1:.2f}".format(item['class'], item['score']) for item in detected_objects[:10]])
+        body += "<br>".join(["{0}: {1:.2f}".format(item['class'], item['score']) for item in detected_objects[:10]])
+        # Embed the image in the e-mail body
+        body += '<br><br><img src="data:image/jpeg;base64, {}">'.format(image)
         # Send the link to the image in S3
-        body += "\n\n{}".format(url)
+        body += "<br><br>{}".format(url)
+        body += "</body></html>"
         send_email(user, pwd, user, subject, body)
