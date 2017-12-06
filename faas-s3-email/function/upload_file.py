@@ -8,7 +8,7 @@ import base64
 from io import BytesIO
 
 
-def upload_file(aws_access_key_id, aws_secret_access_key, image_data, bucket_name, human_detected):
+def upload_file(aws_access_key_id, aws_secret_access_key, filename_s3, image_data, bucket_name, human_detected):
     """
     Upload byte64 encoded JPEG image data as a new file in Amazon S3 and return its link.
     Depending on the image classification results, the file will be placed either
@@ -16,6 +16,7 @@ def upload_file(aws_access_key_id, aws_secret_access_key, image_data, bucket_nam
 
     :param aws_access_key_id
     :param aws_secret_access_key
+    :param filename_s3: Filename that will appear in S3
     :param image_data: byte64 encoded JPEG image data
     :param bucket_name: Name of the S3 bucket
     :param human_detected: Result of the image classification
@@ -24,11 +25,6 @@ def upload_file(aws_access_key_id, aws_secret_access_key, image_data, bucket_nam
 
     # Create an S3 client
     s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
-
-    # Filename that will appear in S3
-    now = datetime.datetime.now()
-    date_string = now.strftime('%Y%m%d%H%M%S')
-    filename_s3 = "{}.jpg".format(date_string)
 
     if human_detected:
         filename_s3 = "human/{}".format(filename_s3)

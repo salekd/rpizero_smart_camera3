@@ -69,7 +69,8 @@ def handle(req, output_image=False):
     json_req = json.loads(req)
 
     # Load image
-    image_data = base64.b64decode(json_req['image'])
+    filename = json_req['filename']
+    image_data = base64.b64decode(json_req['image_data'])
     image = Image.open(BytesIO(image_data))
     (im_width, im_height) = image.size
     image_np = np.array(image.getdata()).reshape(
@@ -98,7 +99,8 @@ def handle(req, output_image=False):
         buf = BytesIO()
         image.save(buf, format="JPEG")
         image_data = base64.b64encode(buf.getvalue())
-        result['image'] = image_data
+        result['image_data'] = image_data
+        result['filename'] = filename
 
     encoder.FLOAT_REPR = lambda f: format(f, '.4f')
     encoder.c_make_encoder = None

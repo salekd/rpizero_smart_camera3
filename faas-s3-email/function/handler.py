@@ -6,7 +6,8 @@ from send_email import *
 
 def handle(req):
     json_req = json.loads(req)
-    image = json_req['image']
+    image_data = json_req['image_data']
+    filename = json_req['filename']
     detected_objects = json_req['detected_objects']
 
     # Read config file
@@ -26,8 +27,17 @@ def handle(req):
             break
     print("human_detected = {}".format(human_detected))
 
+    # Define the filename that will appear on S3
+    # by stripping the image number at the beginning of the filename provided by Motion
+    # as we want the file name to start with a date.
+    # For example 04-20170724114420-00.jpg will become 20170724114420-00.jpg
+    # The last two digits stand for the frame number.
+    # http://htmlpreview.github.io/?https://github.com/Motion-Project/motion/blob/master/motion_guide.html#picture_filename
+    # http://htmlpreview.github.io/?https://github.com/Motion-Project/motion/blob/master/motion_guide.html#conversion_specifiers
+    filename_s3 = filename[filename.find('-')+1:]
+
     # Upload image to S3 and remove the local copy
-    url = upload_file(aws_access_key_id, aws_secret_access_key, image, bucket_name, human_detected)
+    url = upload_file(aws_access_key_id, aws_secret_access_key, filename_s3, image_data, bucket_name, human_detected)
 
     # Send e-mail notification
     if human_detected:
