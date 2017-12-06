@@ -46,4 +46,4 @@ def handle(req):
         body = "\n".join(["{0}: {1:.2f}".format(item['class'], item['score']) for item in detected_objects[:10]])
         # Send the link to the image in S3
         body += "\n\n{}".format(url)
-        send_email(user, pwd, user, subject, body, image)
+        send_email(user, pwd, user, subject, body, image_data)
