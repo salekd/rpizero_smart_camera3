@@ -62,7 +62,7 @@ WORKDIR /home/app/function/
 COPY function/requirements.txt    .
 USER root
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libfreetype6-dev pkg-config
+    libfreetype6-dev pkg-config libhdf5-dev
 USER app
 RUN pip3 install --user -r requirements.txt
 
