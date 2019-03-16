@@ -29,7 +29,7 @@ RUN python3 setup.py build --cpp_implementation \
     && python3 setup.py test --cpp_implementation \
     && python3 setup.py install --cpp_implementation
 ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=cpp
-ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION_VERSION=3
+ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION_VERSION=2
 
 WORKDIR /models/research/
 RUN protoc object_detection/protos/*.proto --python_out=.
