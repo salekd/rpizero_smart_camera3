@@ -54,6 +54,7 @@ WORKDIR /home/app/
 USER root
 COPY function           function
 RUN chown -R app:app ./
+RUN chown -R app:app /ssd_mobilenet_v1_coco_11_06_2017
 USER app
 
 # Make sure to allow enough time for the function to run
