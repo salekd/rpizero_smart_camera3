@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl git unzip \
     python3-pip python3-dev python3-setuptools build-essential python3-tk \
     libblas-dev liblapack-dev libatlas-base-dev gfortran python-setuptools \
-    libfreetype6-dev libjpeg-dev libpng-dev pkg-config libhdf5-dev \
+    libfreetype6-dev libjpeg-dev libpng-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && echo "Pulling watchdog binary from Github." \
@@ -61,12 +61,20 @@ RUN touch ./function/__init__.py
 
 WORKDIR /home/app/function/
 COPY function/requirements.txt    .
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libfreetype6-dev pkg-config libhdf5-dev
+USER app
 RUN pip3 install --user -r requirements.txt
 
 WORKDIR /home/app/
 COPY function           function
 
 ENV fprocess="python3 index.py"
+# Make sure to allow enough time for the function to run
+ENV read_timeout=10
+ENV write_timeout=10
+ENV exec_timeout=60
 EXPOSE 8080
 
 HEALTHCHECK --interval=3s CMD [ -e /tmp/.lock ] || exit 1
