@@ -45,6 +45,7 @@ ENV TF_CPP_MIN_LOG_LEVEL=3
 # Add non root user
 RUN adduser --disabled-password --gecos '' app
 RUN chown app /home/app
+RUN chown -R app:app /ssd_mobilenet_v1_coco_11_06_2017
 
 USER app
 ENV PATH=$PATH:/home/app/.local/bin
